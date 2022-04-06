@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css" type="text/css">
+        
+        <script src="https://cesium.com/downloads/cesiumjs/releases/1.92/Build/Cesium/Cesium.js"></script>
+        <link href="https://cesium.com/downloads/cesiumjs/releases/1.92/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/build/ol.js"></script>
+        <script src="./js/const.js"></script>
+        <script src="./js/ol/layers/map/TileMapObject.js"></script>
+        <script src="./js/ol/map.js"></script>
+
+        <script src="./js/cesium/map.js"></script>
+        
+
+        <title>cesium test</title>
+        <style>
+            body, html { height:100%; width:100%; overflow: hidden;}
+            #wrap { position:relative; height:100%; width:100%;display: flex; } 
+            #wrap > div{
+                width:50%;
+                height:100%;
+                
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="wrap">
+            <div id="mainMap"></div>
+            <div id="cesiumMap"></div>
+        </div>
+
+        <script>
+            MAINMAP = new MapOL("mainMap").createMap();
+            CESIUMMAP = new MapCesium("cesiumMap").createMap();
+        </script>
+    </body>
+
+  
+</html>
