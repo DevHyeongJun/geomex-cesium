@@ -23,6 +23,16 @@ class MapCesium {
         // }
     }
 
+    getMap() {
+        return this.MAP;
+    }
+
+    addLayer(layer) {
+        const scene = this.MAP.getCesiumScene();
+
+        scene.primitives.add(layer);
+    }
+
     createMap = () => {
         // this.MAP =  new Cesium.Viewer(this.targetId, {
         //     requestRenderMode: true,
@@ -51,19 +61,19 @@ class MapCesium {
      //   var ol3d = new olcs.OLCesium({map : this.MAINMAP, target :'map3d'});
 
         //안쓰면 카메라 갱신이 안된다. 
-        var scene = this.MAP.getCesiumScene();
+        
         //활성화 시킴
         this.MAP.setEnabled(true);
-       //this.MAP.scene.primitives.add(Cesium.createOsmBuildings());
-        
+        const scene = this.MAP.getCesiumScene();
         //scene 추가 > scene = layer? 또는 어떠한 객체
-            
+        //지형 객체 생성
         scene.terrainProvider = Cesium.createWorldTerrain();
-        //건물 객체 추가.
-        //CESIUMMAP.MAP.getDataSourceDisplay().scene.primitives.add(Cesium.createOsmBuildings(),1);
-        scene.primitives.add(Cesium.createOsmBuildings());
-        scene.globe.depthTestAgainstTerrain = true;
         
+        //건물 객체 추가.
+        this.addLayer(Cesium.createOsmBuildings());
+        
+       // scene.globe.depthTestAgainstTerrain = true;
+        //카메라 강제 이동
         // this.MAP.camera.flyTo({
         //     destination : Cesium.Cartesian3.fromDegrees(GLOBAL.MAP.OPTION.INIT_LON, GLOBAL.MAP.OPTION.INIT_LAT, 1000),
         //     orientation : {
@@ -83,19 +93,12 @@ class MapCesium {
         const cartographic = this.MAP.camera.positionCartographic;
 
         //라디안을 도(경위도) 단위로 변경
-        //경도
         const longitude = Number(Cesium.Math.toDegrees(cartographic.longitude).toFixed(10));
-        //위도
         const latitude = Number(Cesium.Math.toDegrees(cartographic.latitude).toFixed(10));
     }
 
     moveMap = (lon, lat) => {
-        
-
         this.MAP.camera.position = Cesium.Cartesian3.fromDegrees(lon, lat, 1000);
-     
-
        // this.MAP.scene.camera.lookAt(target, offset);
-
     }
 }

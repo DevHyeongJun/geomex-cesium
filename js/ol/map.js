@@ -23,10 +23,15 @@ class MapOL {
         return this.MAP;
     }
 
+    addLayer(layer) {
+        this.LAYERS.push(layer);
+        this.MAP.addLayer(layer);
+    }
+
     createMap() {
         
         this.MAP = new ol.Map(this.mapOpt);
-        this.MAP.addLayer(TileMapObject.getOSM());
+        this.addLayer(TileMapObject.getOSM());
         //Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
         //세슘의 ol3 입히는법
         // const ol3d = new olcs.OLCesium({map: this.MAP});
@@ -64,7 +69,7 @@ class MapOL {
     }
 
     getLatLon = () => {
-
+        
     }
 
     moveMap = (lat, lon) => {
