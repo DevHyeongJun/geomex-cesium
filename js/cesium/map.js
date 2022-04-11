@@ -24,7 +24,20 @@ class MapCesium {
     }
 
     createMap = () => {
-        this.MAP =  new Cesium.Viewer(this.targetId, {
+        // this.MAP =  new Cesium.Viewer(this.targetId, {
+        //     requestRenderMode: true,
+        //     maximumRenderTimeChange: Infinity,
+        //     timeline: false,
+        //     animation: false,
+        //     baseLayerPicker: false,
+        //     sceneModePicker: false,
+        //     terrainProvider: Cesium.createWorldTerrain(),
+        //     imageryProvider: Cesium.createWorldImagery()
+        // });
+
+        this.MAP = new olcs.OLCesium({
+            map : MAINMAP.getMap(), 
+            target :'cesiumMap',
             requestRenderMode: true,
             maximumRenderTimeChange: Infinity,
             timeline: false,
@@ -35,17 +48,28 @@ class MapCesium {
             imageryProvider: Cesium.createWorldImagery()
         });
 
-        //scene 추가 > scene = layer? 또는 어떠한 객체
-        this.MAP.scene.primitives.add(Cesium.createOsmBuildings());
-        this.MAP.scene.globe.depthTestAgainstTerrain = true;
+     //   var ol3d = new olcs.OLCesium({map : this.MAINMAP, target :'map3d'});
+
+        //안쓰면 카메라 갱신이 안된다. 
+        //var scene = this.MAP.getCesiumScene();
+        //활성화 시킴
+        this.MAP.setEnabled(true);
+       //this.MAP.scene.primitives.add(Cesium.createOsmBuildings());
         
-        this.MAP.camera.flyTo({
-            destination : Cesium.Cartesian3.fromDegrees(GLOBAL.MAP.OPTION.INIT_LON, GLOBAL.MAP.OPTION.INIT_LAT, 1000),
-            orientation : {
-              heading : Cesium.Math.toRadians(0.0),
-              pitch : Cesium.Math.toRadians(-15.0),
-            }
-        });
+        //scene 추가 > scene = layer? 또는 어떠한 객체
+        
+        //건물 객체 추가.
+        //CESIUMMAP.MAP.getDataSourceDisplay().scene.primitives.add(Cesium.createOsmBuildings(),1);
+        this.MAP.getDataSourceDisplay().scene.primitives.add(Cesium.createOsmBuildings());
+        //this.MAP.scene.globe.depthTestAgainstTerrain = true;
+        
+        // this.MAP.camera.flyTo({
+        //     destination : Cesium.Cartesian3.fromDegrees(GLOBAL.MAP.OPTION.INIT_LON, GLOBAL.MAP.OPTION.INIT_LAT, 1000),
+        //     orientation : {
+        //       heading : Cesium.Math.toRadians(0.0),
+        //       pitch : Cesium.Math.toRadians(-15.0),
+        //     }
+        // });
 
         return this;
         
@@ -66,6 +90,7 @@ class MapCesium {
 
     moveMap = (lon, lat) => {
         
+
         this.MAP.camera.position = Cesium.Cartesian3.fromDegrees(lon, lat, 1000);
      
 
