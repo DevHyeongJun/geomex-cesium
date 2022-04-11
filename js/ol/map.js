@@ -23,9 +23,9 @@ class MapOL {
         
         this.MAP = new ol.Map(this.mapOpt);
         this.MAP.addLayer(TileMapObject.getOSM());
-        alert('jd');
+     
         //마우스 이동 이벤트 
-        this.MAP.on('moveend', (evt) => {
+        this.MAP.on('postrender', (evt) => {
             const latlon = ol.proj.toLonLat(this.MAP.getView().getCenter());
 
             CESIUMMAP.moveMap(latlon[0], latlon[1]);
