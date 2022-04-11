@@ -51,17 +51,18 @@ class MapCesium {
      //   var ol3d = new olcs.OLCesium({map : this.MAINMAP, target :'map3d'});
 
         //안쓰면 카메라 갱신이 안된다. 
-        //var scene = this.MAP.getCesiumScene();
+        var scene = this.MAP.getCesiumScene();
         //활성화 시킴
         this.MAP.setEnabled(true);
        //this.MAP.scene.primitives.add(Cesium.createOsmBuildings());
         
         //scene 추가 > scene = layer? 또는 어떠한 객체
-        
+            
+        scene.terrainProvider = Cesium.createWorldTerrain();
         //건물 객체 추가.
         //CESIUMMAP.MAP.getDataSourceDisplay().scene.primitives.add(Cesium.createOsmBuildings(),1);
-        this.MAP.getDataSourceDisplay().scene.primitives.add(Cesium.createOsmBuildings());
-        //this.MAP.scene.globe.depthTestAgainstTerrain = true;
+        scene.primitives.add(Cesium.createOsmBuildings());
+        scene.globe.depthTestAgainstTerrain = true;
         
         // this.MAP.camera.flyTo({
         //     destination : Cesium.Cartesian3.fromDegrees(GLOBAL.MAP.OPTION.INIT_LON, GLOBAL.MAP.OPTION.INIT_LAT, 1000),
