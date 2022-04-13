@@ -1,0 +1,30 @@
+body, html { height:100%; width:100%; overflow: hidden;}
+.wrap {  height:100%; width:100%;display: flex; flex-direction: column; } 
+
+.wrap > div{
+    display: flex; 
+}
+
+.wrap > div > div {
+    flex : 1;
+}
+
+
+.top {
+    height:60px;
+    
+}
+.middle {
+    flex:9;
+    border-top: 1px solid red;
+}
+
+.middle .left {
+    border-right: 1px solid red;
+}
+
+.map_contnet {
+    width:100%;
+    height:100%;
+    position: relative;
+}

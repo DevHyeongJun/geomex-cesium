@@ -2,38 +2,23 @@
 //키셋팅
 Cesium.Ion.defaultAccessToken = GLOBAL.CESIUM.TOKEN;
 
-class MapCesium {
+var MapCesium = function(targetId, _OLMAP) {
 
-    constructor(targetId) {
-        this.targetId = targetId;
-        this.MAP;
-        this.LAYERS = [];
-        
-        //초기 레이어 생성
-        //null
-
-        //지도 초기 옵션 생성
-        // this.mapOpt = {
-        //     target : this.targetId
-        //     , layer : this.LAYERS
-        //     , view: new ol.View({
-        //         center: ol.proj.fromLonLat([126.97806, 37.56667]),
-        //         zoom: 15
-        //     })
-        // }
+    var _TARGET_ID = targetId;
+    var _MAP;
+    var _LAYERS = [];
+  
+    this.getMap = function() {
+        return _MAP;
     }
 
-    getMap() {
-        return this.MAP;
-    }
-
-    addLayer(layer) {
-        const scene = this.MAP.getCesiumScene();
+    this.addLayer= function(layer) {
+        var scene = _MAP.getCesiumScene();
 
         scene.primitives.add(layer);
     }
 
-    createMap = () => {
+    this.init = function() {
         // this.MAP =  new Cesium.Viewer(this.targetId, {
         //     requestRenderMode: true,
         //     maximumRenderTimeChange: Infinity,
@@ -44,10 +29,11 @@ class MapCesium {
         //     terrainProvider: Cesium.createWorldTerrain(),
         //     imageryProvider: Cesium.createWorldImagery()
         // });
+          
 
-        this.MAP = new olcs.OLCesium({
-            map : MAINMAP.getMap(), 
-            target :'cesiumMap',
+        _MAP = new olcs.OLCesium({
+            map : _OLMAP.getMap(),
+            target : _TARGET_ID,
             requestRenderMode: true,
             maximumRenderTimeChange: Infinity,
             timeline: false,
@@ -63,8 +49,8 @@ class MapCesium {
         //안쓰면 카메라 갱신이 안된다. 
         
         //활성화 시킴
-        this.MAP.setEnabled(true);
-        const scene = this.MAP.getCesiumScene();
+        _MAP.setEnabled(true);
+        var scene = _MAP.getCesiumScene();
         //scene 추가 > scene = layer? 또는 어떠한 객체
         //지형 객체 생성
         scene.terrainProvider = Cesium.createWorldTerrain();
@@ -86,19 +72,25 @@ class MapCesium {
         
     }
 
-    //위경도를 가져온다.
-    getLatLon = () => {
-
-        ////현재 카메라 위치를 가져옴 : 경위도(라디안), 높이(미터)
-        const cartographic = this.MAP.camera.positionCartographic;
-
-        //라디안을 도(경위도) 단위로 변경
-        const longitude = Number(Cesium.Math.toDegrees(cartographic.longitude).toFixed(10));
-        const latitude = Number(Cesium.Math.toDegrees(cartographic.latitude).toFixed(10));
+    this.runCamera = function() {
+        
     }
 
-    moveMap = (lon, lat) => {
-        this.MAP.camera.position = Cesium.Cartesian3.fromDegrees(lon, lat, 1000);
+    //위경도를 가져온다.
+    this.getLatLon = function() {
+
+        ////현재 카메라 위치를 가져옴 : 경위도(라디안), 높이(미터)
+        var cartographic = _MAP.camera.positionCartographic;
+
+        //라디안을 도(경위도) 단위로 변경
+        var longitude = Number(Cesium.Math.toDegrees(cartographic.longitude).toFixed(10));
+        var latitude = Number(Cesium.Math.toDegrees(cartographic.latitude).toFixed(10));
+
+        return [longitude, latitude];
+    }
+
+    this.moveMap = (lon, lat) => {
+        _MAP.camera.position = Cesium.Cartesian3.fromDegrees(lon, lat, 1000);
        // this.MAP.scene.camera.lookAt(target, offset);
     }
 }
