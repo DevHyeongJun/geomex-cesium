@@ -11,7 +11,7 @@ function MapCesium(targetId, _OLMAP) {
     this.getMap = function() {
         return this._MAP;
     }
-
+    
     this.addLayer= function(layer) {
         var scene = this._MAP.getCesiumScene();
 
@@ -51,7 +51,8 @@ function MapCesium(targetId, _OLMAP) {
         this._MAP.setEnabled(true);
         var scene = this._MAP.getCesiumScene();
         //scene 추가 > scene = layer? 또는 어떠한 객체
-        //지형 객체 생성
+
+        //3D 지형 객체 생성
         scene.terrainProvider = Cesium.createWorldTerrain();
         
         //건물 객체 추가.
@@ -67,6 +68,8 @@ function MapCesium(targetId, _OLMAP) {
         //     }
         // });
 
+
+       
         return this;
         
     }
