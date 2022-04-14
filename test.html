@@ -31,46 +31,7 @@
         <script src="./js/map/olInterface.js"></script>
         <script src="./js/common/event/main.js"></script>
 
-        <script>
-            //함수 구현을 위해 전역으로 선언함.
-            //commonFunc에서 사용
-            const FUNC_CODE_LAYER_ADD = 'layer_add';
-            const FUNC_CODE_LAYER_REMOVE = 'layer_remove';
-            const FUNC_CODE_CAMERA_AUTO = 'camera_auto';
-            const _FUNC_BUTTON_OBJECT = {
-
-                layeradd : {
-                    name : '레이어추가(양쪽 추가)'
-                    , data : FUNC_CODE_LAYER_ADD
-                    , callBack : Handler.getFunc
-                },
-
-                layerremove : {
-                    name : '레이어 삭제'
-                    , data : FUNC_CODE_LAYER_REMOVE
-                    , callBack : Handler.getFunc
-                },
-
-                cameraauto : {
-                    name : '카메라 회전'
-                    , data : FUNC_CODE_CAMERA_AUTO
-                    , callBack : Handler.getFunc
-                }
-            }
-            
-            createButton(_FUNC_BUTTON_OBJECT);
-
-             //지도 객체
-            MAINMAP = new MapOL("mainMap");   
-            MAINMAP = new UseMapOL(MAINMAP);
-            MAINMAP.init();
-          //  CESIUMMAP = new UseMapCesium(new MapCesium("cesiumMap", MAINMAP));
-          //  CESIUMMAP.init();
-
-        </script>
-
- 
-
+      
     </head>
 
     <body>
@@ -88,6 +49,43 @@
             </div>
         </div>
     </body>
+    <script>
+        //함수 구현을 위해 전역으로 선언함.
+        //commonFunc에서 사용
+        const FUNC_CODE_LAYER_ADD = 'layer_add';
+        const FUNC_CODE_LAYER_REMOVE = 'layer_remove';
+        const FUNC_CODE_CAMERA_AUTO = 'camera_auto';
+        const _FUNC_BUTTON_OBJECT = {
 
+            layeradd : {
+                name : '레이어추가(양쪽 추가)'
+                , data : FUNC_CODE_LAYER_ADD
+                , callBack : Handler.getFunc
+            },
+
+            layerremove : {
+                name : '레이어 삭제'
+                , data : FUNC_CODE_LAYER_REMOVE
+                , callBack : Handler.getFunc
+            },
+
+            cameraauto : {
+                name : '카메라 회전'
+                , data : FUNC_CODE_CAMERA_AUTO
+                , callBack : Handler.getFunc
+            }
+        }
+        
+        createButton(_FUNC_BUTTON_OBJECT);
+
+         //지도 객체
+        MAINMAP = new UseMapOL(new MapOL("mainMap"));
+        MAINMAP.init();
+        MAINMAP.addLayer(TileMapObject.getOSM());
+        
+        CESIUMMAP = new UseMapCesium(new MapCesium("cesiumMap", MAINMAP));
+        CESIUMMAP.init();
+
+    </script>
   
 </html>
