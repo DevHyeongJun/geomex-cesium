@@ -8,6 +8,7 @@ function MapCesium(targetId, _OLMAP) {
     this._MAP;
     this._LAYERS = [];
   
+    this._INIT_CAMERA_RATE = 100;
     this.getMap = function() {
         return this._MAP;
     }
@@ -94,5 +95,43 @@ function MapCesium(targetId, _OLMAP) {
     this.moveMap = (lon, lat) => {
         this._MAP.camera.position = Cesium.Cartesian3.fromDegrees(lon, lat, 1000);
        // this.MAP.scene.camera.lookAt(target, offset);
+    }
+   
+    /**
+     * ptz 제어
+     * @param {*} move 
+     * @param {*} rate 
+     */
+    this.moveCamera = ( move, rate ) => {
+
+        if (!rate) rate = this._INIT_CAMERA_RATE ;
+
+        var camera = this._MAP.getCamera().cam_;
+        var ellipsoid = this._MAP.getCesiumScene().globe.ellipsoid;
+
+        var cameraHeight = ellipsoid.cartesianToCartographic(camera.position).height;
+        var moveRate = cameraHeight / rate;
+
+        switch(move) {
+            case "forward" :
+                camera.moveForward(moveRate);
+                break;
+            case "backward" :
+                camera.moveBackward(moveRate);
+                break;
+            case "left" :
+                camera.moveLeft(moveRate);
+                break;
+            case "right" :
+                camera.moveRight(moveRate);
+                break;
+            case "up" :
+                camera.moveUp(moveRate);
+                break;
+            case "down" :
+                camera.moveDown(moveRate);
+                break;
+
+        }
     }
 }

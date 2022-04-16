@@ -40,22 +40,24 @@
                 <div id="btn_evt"></div>
             </div>
             <div class="middle">
-                <div class="left">
-                    <div id="mainMap" class="map_contnet"></div>
-                </div>
                 <div class="right">
                     <div id="cesiumMap" class="map_contnet"></div>
+                </div>
+                <div class="left">
+                    <div id="mainMap" class="map_contnet"></div>
                 </div>
             </div>
         </div>
     </body>
     <script>
+
         //함수 구현을 위해 전역으로 선언함.
         //commonFunc에서 사용
-        const FUNC_CODE_LAYER_ADD = 'layer_add';
-        const FUNC_CODE_LAYER_REMOVE = 'layer_remove';
-        const FUNC_CODE_CAMERA_AUTO = 'camera_auto';
-        const _FUNC_BUTTON_OBJECT = {
+        var FUNC_CODE_LAYER_ADD = 'layer_add';
+        var FUNC_CODE_LAYER_REMOVE = 'layer_remove';
+        var FUNC_CODE_CAMERA_AUTO = 'camera_auto';
+
+        var _FUNC_BUTTON_OBJECT = {
 
             layeradd : {
                 name : '레이어추가(양쪽 추가)'
@@ -70,10 +72,11 @@
             },
 
             cameraauto : {
-                name : '카메라 회전'
+                name : '카메라 회전 (ON/OF)'
                 , data : FUNC_CODE_CAMERA_AUTO
                 , callBack : Handler.getFunc
-            }
+            },
+           
         }
         
         createButton(_FUNC_BUTTON_OBJECT);

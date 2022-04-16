@@ -14,7 +14,33 @@
       return _MAPOBJECT.getMap();
    }
 
-   this.runCamera = function() {
-      _MAPOBJECT.runCamera();
+   this.moveCamera = function(KeyCode, rate) {
+
+      switch(KeyCode) {
+         case 87 :
+             //w
+             _MAPOBJECT.moveCamera('up', rate);
+             break;
+         case 83 :
+             //s
+             _MAPOBJECT.moveCamera('down', rate);
+             break;
+         case 65 :
+             //a
+             _MAPOBJECT.moveCamera('left', rate);
+             break;
+         case 68 :
+             //d
+             _MAPOBJECT.moveCamera('right', rate);
+             break;
+         case 81 :
+             //q
+             _MAPOBJECT.moveCamera('forward', rate);
+             break;
+         case 69 :
+             //e
+             _MAPOBJECT.moveCamera('backward', rate);
+             break;
+     }
    }
  };

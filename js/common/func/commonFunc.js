@@ -11,6 +11,7 @@ const createButton = (buttonObject) => {
         $btn.text(btnObj.name);
         $btn.data('key', btnObj.data);
         $btn.on('click', function(){
+
             btnObj.callBack(btnObj.data);
         });
 
