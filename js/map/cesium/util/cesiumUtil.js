@@ -1,5 +1,11 @@
 var cesiumUtil = {
-    convertLonLat2CameraPosi : function(lon, lat) {
-       
+    getColor : function(r,g,b,a) {
+        return {
+            alpha: a,
+            blue: b,
+            green: g,
+            red: r
+        };
     }
 }
+

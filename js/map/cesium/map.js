@@ -12,11 +12,28 @@ function MapCesium(targetId, _OLMAP) {
     this.getMap = function() {
         return this._MAP;
     }
-    
-    this.addLayer= function(layer) {
-        var scene = this._MAP.getCesiumScene();
 
-        scene.primitives.add(layer);
+    this._prop = {
+        isMoveCamera : false
+    }
+    
+    this.getProp = function(key) {        
+        return this._prop[key];
+    }
+
+    this.setProp = function(key, value) {
+        
+        this._prop[key] = value;
+
+        return this._prop;
+    }
+    
+    this.addLayer = function(layer) {
+        
+        var entities = this._MAP.getDataSourceDisplay().defaultDataSource.entities;
+        
+        entities.add(layer);
+
     }
 
     this.init = function() {
@@ -56,9 +73,6 @@ function MapCesium(targetId, _OLMAP) {
         //3D 지형 객체 생성
         scene.terrainProvider = Cesium.createWorldTerrain();
         
-        //건물 객체 추가.
-        this.addLayer(Cesium.createOsmBuildings());
-        
        // scene.globe.depthTestAgainstTerrain = true;
         //카메라 강제 이동
         // this.MAP.camera.flyTo({
@@ -80,19 +94,19 @@ function MapCesium(targetId, _OLMAP) {
     }
 
     //위경도를 가져온다.
-    this.getLatLon = function() {
+    this.getCenter = function() {
 
         ////현재 카메라 위치를 가져옴 : 경위도(라디안), 높이(미터)
-        var cartographic = this._MAP.camera.positionCartographic;
-
+        var camera = CESIUMMAP.getMap().camera_;
+        var position = camera.getPosition();
         //라디안을 도(경위도) 단위로 변경
-        var longitude = Number(Cesium.Math.toDegrees(cartographic.longitude).toFixed(10));
-        var latitude = Number(Cesium.Math.toDegrees(cartographic.latitude).toFixed(10));
-
-        return [longitude, latitude];
+       // var longitude = Number(Cesium.Math.toDegrees(cartographic.longitude).toFixed(10));
+        //var latitude = Number(Cesium.Math.toDegrees(cartographic.latitude).toFixed(10));
+        
+        return CESIUMMAP.getMap().camera_.toLonLat_(position);
     }
 
-    this.moveMap = (lon, lat) => {
+    this.moveMap = function(lon, lat) {
         this._MAP.camera.position = Cesium.Cartesian3.fromDegrees(lon, lat, 1000);
        // this.MAP.scene.camera.lookAt(target, offset);
     }
@@ -102,10 +116,11 @@ function MapCesium(targetId, _OLMAP) {
      * @param {*} move 
      * @param {*} rate 
      */
-    this.moveCamera = ( move, rate ) => {
+    this.moveCamera = function( move, rate ) {
 
+        if (!this._prop.isMoveCamera) return;
         if (!rate) rate = this._INIT_CAMERA_RATE ;
-
+        
         var camera = this._MAP.getCamera().cam_;
         var ellipsoid = this._MAP.getCesiumScene().globe.ellipsoid;
 

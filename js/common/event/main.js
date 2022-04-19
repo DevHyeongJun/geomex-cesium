@@ -14,8 +14,10 @@
         
         $(document).on('keydown', function(e){
            var KeyCode = e.keyCode;
-            console.log(KeyCode);
-           CESIUMMAP.moveCamera(KeyCode, 50);
+
+           if ( CESIUMMAP.getProp('isMoveCamera') ) {
+                CESIUMMAP.moveCamera(KeyCode, 50);
+           }
         });
     });
 

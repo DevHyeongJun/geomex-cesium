@@ -20,8 +20,10 @@
         <script src="./js/map/ol/layers/map/TileMapObject.js"></script>
         <script src="./js/map/ol/map.js"></script>
         <!-- cesium -->
+        <script src="./js/map/cesium/util/cesiumUtil.js"></script>
         <script src="./js/map/cesium/map.js"></script>
-
+        <script src="./js/map/cesium/layers/vector.js"></script>
+        
         <!-- common -->
         <script src="./js/common/func/handler.js"></script>
         <script src="./js/common/func/commonFunc.js"></script>
@@ -37,7 +39,7 @@
     <body>
         <div id="wrap" class="wrap">
             <div class="top">
-                <div id="btn_evt"></div>
+                <div id="top_content"></div>
             </div>
             <div class="middle">
                 <div class="right">
@@ -51,35 +53,76 @@
     </body>
     <script>
 
-        //함수 구현을 위해 전역으로 선언함.
-        //commonFunc에서 사용
-        var FUNC_CODE_LAYER_ADD = 'layer_add';
-        var FUNC_CODE_LAYER_REMOVE = 'layer_remove';
-        var FUNC_CODE_CAMERA_AUTO = 'camera_auto';
+        var _FUNC_OBJECT = {
 
-        var _FUNC_BUTTON_OBJECT = {
+            layerpoint : {
+                name : '레이어추가(포인트)'
+                , id : 'btn1'
+                , data : {type:'point'}
+                , callBack : function() {
+                    var center = CESIUMMAP.getCenter();
+                    var style = {
+                        color: cesiumUtil.getColor(255,0,0,1),
+                        pixelSize : 10
+                    };
+                    CESIUMMAP.addLayer(CesiumLayer.createPoint(center[0], center[1], style));
+                }
+            },
 
-            layeradd : {
-                name : '레이어추가(양쪽 추가)'
-                , data : FUNC_CODE_LAYER_ADD
-                , callBack : Handler.getFunc
+            layerline : {
+                name : '레이어추가(라인)'
+                , id : 'btn11'
+                , data : {type:'point'}
+                , callBack : function() {
+                    var center = CESIUMMAP.getCenter();
+                    var style = {
+                        meterial: {color : cesiumUtil.getColor(255,0,0,1)},
+                        width: 4
+                    };
+
+                    var position = [center, [center[0] + 0.01, center[1] + 0.01] ];
+                    console.log(position);
+                    CESIUMMAP.addLayer(CesiumLayer.createLine(position, style));
+                }
+            },
+
+            layerpolygon : {
+                name : '레이어추가(폴리곤)'
+                , id : 'btn12'
+                , data : {type:'point'}
+                , callBack : function() {
+                    CESIUMMAP.addLayer(CesiumLayer.createPolygon());
+                }
             },
 
             layerremove : {
                 name : '레이어 삭제'
-                , data : FUNC_CODE_LAYER_REMOVE
+                , id : 'btn2'
                 , callBack : Handler.getFunc
             },
 
             cameraauto : {
-                name : '카메라 회전 (ON/OF)'
-                , data : FUNC_CODE_CAMERA_AUTO
-                , callBack : Handler.getFunc
+                name : '카메라 조작 (이동 : WASD / 확대축소 : QE)'
+                , id : 'checkbox1'
+                , type : 'checkbox'
+                , callBack : function(key, data){
+                    CESIUMMAP.setProp('isMoveCamera', data.isChecked);
+                }
             },
-           
+
+            testData : {
+                name : '가까운 거리 테스트'
+                , id : 'checkbox2'
+                , type : 'checkbox'
+                , callBack : function(key, data) {
+
+                    MAINMAP.setProp('isTest', data.isChecked);
+                    MAINMAP.test();
+                }
+            }
         }
         
-        createButton(_FUNC_BUTTON_OBJECT);
+        createElement(_FUNC_OBJECT);
 
          //지도 객체
         MAINMAP = new UseMapOL(new MapOL("mainMap"));
