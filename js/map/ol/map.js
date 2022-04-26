@@ -28,7 +28,9 @@ function MapOL(targetId) {
         , layer : []
         , view: new ol.View({
             center: ol.proj.fromLonLat([GLOBAL.MAP.OPTION.INIT_LON, GLOBAL.MAP.OPTION.INIT_LAT]),
-            zoom: 15
+            zoom: 12,
+            minZoom : 7,
+            maxZoom : 20
         })
     }
     
@@ -56,7 +58,7 @@ function MapOL(targetId) {
     this.init = function() {
 
         this._MAP = new ol.Map(this._MAP_OPTION);
-
+        
         this.addLayer(new ol.layer.Vector({
             id : 'test',
             zIndex: 99999,
@@ -68,13 +70,53 @@ function MapOL(targetId) {
                 })
             })
         }));        
+
+        /**
+        * @param {number} resolution Resolution.
+        * @param {string} units Units
+        * @param {boolean=} opt_round Whether to round the scale or not.
+        * @return {number} Scale
+        */
+       var getScaleFromResolution = function(resolution, units, opt_round) {
+         var scale = INCHES_PER_UNIT[units] * DOTS_PER_INCH * resolution;
+         if (opt_round) {
+           scale = Math.round(scale);
+         }
+         return scale;
+       };
+
+        var _this = this;
+        //지도 동기화
+        this._MAP.on('postrender', function(evt) {
+            var latlon = _this.getLatLon();
+            var resolution = _this._MAP.getView().getResolution();
+            var units = _this._MAP.getView().getProjection().getUnits();
+            
+            var z = _this.getScaleFromResolution(resolution, units);
+            console.log(resolution, units, z);
+            CESIUMMAP.setCenter(latlon[0], latlon[1], z);
+        });
     }
 
     this.getLatLon = function() {
-        
+        return ol.proj.toLonLat(this._MAP.getView().getCenter());
     }
 
     this.moveMap = function (lat, lon) {
         this._VIEW.setCenter([lat, lon]);
     }
+
+    this.getScaleFromResolution = function(resolution, units, opt_round) {
+        var INCHES_PER_UNIT = {
+            'm': 39.37,
+            'dd': 4374754
+        };
+        var DOTS_PER_INCH = 72;
+        
+        var scale = INCHES_PER_UNIT[units] * DOTS_PER_INCH * (resolution);
+       // if (opt_round) {
+            scale = Math.round(scale);
+       // }
+        return scale;
+    };
 }

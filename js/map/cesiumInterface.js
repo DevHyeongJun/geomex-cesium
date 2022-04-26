@@ -25,6 +25,10 @@
         return _MAPOBJECT.getProp();
     }
 
+    this.setCenter = function(x, y, z) {
+        return _MAPOBJECT.setCenter(x, y, z);
+    }
+
     this.getCenter = function() {
         return _MAPOBJECT.getCenter();
     }

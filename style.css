@@ -1,22 +1,18 @@
 body, html { height:100%; width:100%; overflow: hidden;}
-.wrap {  height:100%; width:100%;display: flex; flex-direction: column; } 
-
-.wrap > div{
-    display: flex; 
-}
-
-.wrap > div > div {
-    flex : 1;
-}
-
+.wrap {  height:100%; width:100%; } 
 
 .top {
     height:60px;
-    
 }
+
 .middle {
-    flex:9;
+    display: flex; 
     border-top: 1px solid red;
+    height:100%;
+}
+
+.wrap .middle > div {
+    flex : 1;
 }
 
 .middle .left {
